@@ -21,7 +21,7 @@ require_once('TwitterAPIExchange.php');
 class Gethours {
     //put your code here
     
-   public static function gettweets()
+   public static function gettweets($tweet_id)
     {
         
       /** Set access tokens here - see: https://dev.twitter.com/apps/ **/
@@ -33,7 +33,7 @@ $settings = array(
 );
 $url = "https://api.twitter.com/1.1/statuses/user_timeline.json";
 $requestMethod = "GET";
-if (isset($_GET['user'])) {$user = $_GET['user'];} else {$user = "93Cummins";}
+if (isset($_GET['user'])) {$user = $_GET['user'];} else {$user = "$tweet_id";}
 if (isset($_GET['count'])) {$user = $_GET['count'];} else {$count = 100;}
 $getfield = "?screen_name=$user&count=$count";
 $twitter = new TwitterAPIExchange($settings);

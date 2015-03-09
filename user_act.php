@@ -30,8 +30,6 @@ include("class.graph.histogram.php");
 include 'Gethours.php';
 include 'getInput.html';
 
-print_r($_GET['tweet_id']);
-
 
 header("Pragma: no-cache"); 
 header("Cache-Control: no-cache");
@@ -63,13 +61,17 @@ if (!isset($_POST['h_width']))
 	</style>
   </head>
   <body bgcolor="#EFFFDD">
-  <table width="100%" border="1">
+  
+  <div class="table-responsive">
+  
+  <table width="100%" border="1" class="table">
   <tr>
   <td>
 <?php
 
-
-$value= Gethours::gettweets();
+$twt_id=$_GET['tweet_id'];
+//Pass the twiter id as parameter to static fucntion
+$value= Gethours::gettweets($twt_id);
 
 //print_r($value['mcnt']);
 
@@ -143,6 +145,8 @@ krsort($value['mcnt']);
    print("<tr><td colspan=\"2\" bgcolor=\"#FF0000\" style=\"color: #FFFF33;\">".$H->ErrorMsg."</td></tr>");
 ?>
   </table>
+  
+  </div>
   
   </body>
 </html>
