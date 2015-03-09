@@ -1,14 +1,5 @@
 <?php
-/*include 'Gethours.php';
 
-$value= Gethours::gettweets();
-
-//print_r($value['mcnt']);
-
-
-krsort($value['mcnt']);
-
-*/
 if (isset($_GET['vs']))
 {
 	ini_set('highlight.string',  '#999900');
@@ -28,7 +19,7 @@ if (isset($_GET['vs']))
 
 include("class.graph.histogram.php");
 include 'Gethours.php';
-include 'getInput.html';
+include_once 'getInput.html';
 
 
 header("Pragma: no-cache"); 
@@ -60,8 +51,21 @@ if (!isset($_POST['h_width']))
 	  body{overflow:auto;}
 	</style>
   </head>
-  <body bgcolor="#EFFFDD">
+ <script>
+ $(document).ready(function(){
+$("#collect").append("<?=$_GET['tweet_id'];?>");
+	
+ $("#sub_mit").click(function(){
+ // alert($("#collect").text());
+  var col=$("#collect").text();
+ //$("#collect").append(col);
+ 	 });
   
+ });
+</script> 
+
+ <body bgcolor="#EFFFDD">
+
   <div class="table-responsive">
   
   <table width="100%" border="1" class="table">
@@ -71,12 +75,16 @@ if (!isset($_POST['h_width']))
 
 $twt_id=$_GET['tweet_id'];
 //Pass the twiter id as parameter to static fucntion
-$value= Gethours::gettweets($twt_id);
+
+
+	$value= Gethours::gettweets($twt_id);
+	krsort($value['mcnt']);
+	
 
 //print_r($value['mcnt']);
 
 
-krsort($value['mcnt']);
+
 	
 	
 	
