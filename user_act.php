@@ -1,5 +1,5 @@
 <?php
-
+set_time_limit(60);
 if (isset($_GET['vs']))
 {
 	ini_set('highlight.string',  '#999900');
@@ -17,9 +17,9 @@ if (isset($_GET['vs']))
 	exit;
 }
 
-include("class.graph.histogram.php");
-include 'Gethours.php';
-include_once 'getInput.html';
+include_once("class.graph.histogram.php");
+include_once("Gethours.php");
+include_once("getInput.html");
 
 
 header("Pragma: no-cache"); 
@@ -54,8 +54,9 @@ if (!isset($_POST['h_width']))
  <script>
  $(document).ready(function(){
 $("#collect").append("<?=$_GET['tweet_id'];?>");
-	
- $("#sub_mit").click(function(){
+
+
+$("#sub_mit").click(function(){
  // alert($("#collect").text());
   var col=$("#collect").text();
  //$("#collect").append(col);
@@ -72,37 +73,28 @@ $("#collect").append("<?=$_GET['tweet_id'];?>");
   <tr>
   <td>
 <?php
-
 $twt_id=$_GET['tweet_id'];
 //Pass the twiter id as parameter to static fucntion
+$value= Gethours::gettweets($twt_id);
+
+if(!empty($value))
+{
+krsort($value['mcnt']);
+$H = new Histogram($value['mcnt']);
+$H->width = $h_width;                        // 150 par d�faut
+$H->height = $h_height;                      // 150 par d�faut
+$H->bgcolor = "#EFFFDD";                     // #FFFFFF par d�faut
+$H->DrawScale = ($h_drawscale != "");        // true par d�faut
+$H->DrawGradLine = ($h_drawgradline != "");  // false par d�faut
+$H->border=$h_border;                        // 0 par d�faut
+$H->ShowValue = ($h_showvalue != "");        // false par d�faut
+$H->XAxisLabel = $h_xaxislabel;              //
+$H->YAxisLabel = $h_yaxislabel;              //
+$H->XAxisLabelColor = "#6666FF";             // #000000 par d�faut
+$H->YAxisLabelColor = "#00CC66";             // #000000 par d�faut
+$H->Draw();
 
 
-	$value= Gethours::gettweets($twt_id);
-	krsort($value['mcnt']);
-	
-
-//print_r($value['mcnt']);
-
-
-
-	
-	
-	
-    $H = new Histogram($value['mcnt']);
-    $H->width = $h_width;                        // 150 par d�faut
-    $H->height = $h_height;                      // 150 par d�faut
-    $H->bgcolor = "#EFFFDD";                     // #FFFFFF par d�faut
-    $H->DrawScale = ($h_drawscale != "");        // true par d�faut
-    $H->DrawGradLine = ($h_drawgradline != "");  // false par d�faut     
-    $H->border=$h_border;                        // 0 par d�faut
-    $H->ShowValue = ($h_showvalue != "");        // false par d�faut
-    $H->XAxisLabel = $h_xaxislabel;              //
-    $H->YAxisLabel = $h_yaxislabel;              //
-    $H->XAxisLabelColor = "#6666FF";             // #000000 par d�faut
-    $H->YAxisLabelColor = "#00CC66";             // #000000 par d�faut
-	$H->Draw();	
-	//$H->Export('c:\\histogramme.png');
-	//$H->ExportAndDraw('c:\\histogramme.png');
 ?>
 	
   </td>
@@ -151,7 +143,12 @@ $twt_id=$_GET['tweet_id'];
 <?php
   if ($H->ErrorMsg != "")
    print("<tr><td colspan=\"2\" bgcolor=\"#FF0000\" style=\"color: #FFFF33;\">".$H->ErrorMsg."</td></tr>");
-?>
+
+}
+else {
+	echo 'Use some other ID like cricketworldcup or check';
+}
+  ?>
   </table>
   
   </div>

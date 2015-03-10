@@ -34,13 +34,15 @@ $settings = array(
 $url = "https://api.twitter.com/1.1/statuses/user_timeline.json";
 $requestMethod = "GET";
 if (isset($_GET['user'])) {$user = $_GET['user'];} else {$user = "$tweet_id";}
-if (isset($_GET['count'])) {$user = $_GET['count'];} else {$count = 100;}
+if (isset($_GET['count'])) {$user = $_GET['count'];} else {$count=100;}
 $getfield = "?screen_name=$user&count=$count";
 $twitter = new TwitterAPIExchange($settings);
 $string = json_decode($twitter->setGetfield($getfield)
 ->buildOauth($url, $requestMethod)
 ->performRequest(),$assoc = TRUE);
 
+//print_r($getfield);
+//print_r(count($string));
 
 
 if(!empty($string["errors"][0]["message"])) {
@@ -52,6 +54,8 @@ if(!empty($string["errors"][0]["message"])) {
 
 $two_dim=array();
 $i=0;
+if(!empty($string))
+{
  foreach($string as $items)
     {
     //echo "Time and Date of Tweet: ".$items['created_at']."<br />";
@@ -77,6 +81,8 @@ $i=0;
 
 return $two_dim;
 
+    }
+    
     }
         
     }
